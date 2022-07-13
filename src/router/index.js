@@ -1,24 +1,30 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import WaiverFormView from '../views/WaiverForm.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    redirect: { name: 'WaiverForm' },
+    component: WaiverFormView
   },
   {
-    path: '/about',
-    name: 'about',
+    path: '/WaiverForm',
+    name: 'WaiverForm',
+    component: WaiverFormView
+  },
+  {
+    path: '/WaiverList',
+    name: 'waiverList',
     // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
+    // this generates a separate chunk (waiverList.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: () => import('../views/waiverList.vue')
   }
+
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 

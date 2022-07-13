@@ -1,0 +1,8 @@
+***BONUS FEATURES TO IMPLEMENT***
+~SelectBox
+	-change logo based on location selected
+	-Change waiver info based on location selected
+~
+~
+~
+~

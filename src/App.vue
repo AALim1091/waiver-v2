@@ -1,11 +1,35 @@
 <template>
+    <div id = "app">
+      <!--<WaiverForm />-->
+    </div>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/WaiverForm">Waiver Form </router-link> |
+    <router-link to="/waiverList">Waiver List (Admin Portal)</router-link>
   </nav>
   <router-view/>
 </template>
+<!-- Comment-->>
 
+<script>
+//import WaiverForm from './components/WaiverForm.vue'
+
+export default 
+{
+  name: "App",
+  components:
+  {
+    //WaiverForm
+  }
+};
+</script>
+
+<!--
+Create -> POST
+Read -> GET ALL waivers ***(DONE) ***
+Read by ID -> GET {id}
+Update -> PUT
+Delete -> DELETE
+-->
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -13,6 +37,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin-top:60px;
+}
+
+body {
+  margin: 0;
+  background: #eee;
+  
 }
 
 nav {

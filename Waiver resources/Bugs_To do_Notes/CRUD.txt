@@ -1,0 +1,9 @@
+Create -> POST
+Read -> GET
+Read by ID -> GET {id}
+Update -> PUT
+Delete -> DELETE
+
+
+-How to do a modal in vue
+-Filter by specific column in vue table
