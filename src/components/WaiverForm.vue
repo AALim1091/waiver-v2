@@ -141,7 +141,7 @@ export default {
                   console.log('error here');
                  })
             
-    },
+    }
   },
   props: {
     msg: String,
