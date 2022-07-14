@@ -42,7 +42,8 @@
                         <button class="my-button-style edit-button" @click="displayEditModal">Edit</button>
                     </div>
                     <div>
-                        <button class="my-button-style delete-button" @click="Delete(waivers.id)">Delete</button> <!-- DELETE BUTTON FOR THE RECORD (Calls DELETE METHOD)-->
+                        <!-- <button class="my-button-style delete-button" @click="Delete(waivers.id)">Delete</button> DELETE BUTTON FOR THE RECORD (Calls DELETE METHOD) -->
+                        <button class="my-button-style delete-button" @click="displayDeleteModal(waivers.id)">Delete</button>
                     </div>
                 </div>
             </td> 
@@ -52,12 +53,17 @@
 
     <!--Show Details Modal-->
     <div>
-        <DetailsModal v-show="showDetailsModal" :detailID="selectedDetailsID" @close-modal="hideDetailsModal" />
+        <DetailsModal v-show="showDetailsModal" :details="waiverDetails" @close-modal="hideDetailsModal" />
     </div>
 
     <!--Show Edit Modal-->
     <div>
         <EditModal v-show="showEditModal" @close-modal="hideEditModal" />
+    </div>
+
+     <!--Show Delete Modal-->
+    <div>
+        <DeleteModal v-show="showDeleteModal" :deleteID="selectedDeleteID" @close-modal="hideDeleteModal" />
     </div>
 
 </template>
@@ -68,30 +74,35 @@
 import axios from "axios"
 import DetailsModal from '../components/DetailsModal.vue'
 import EditModal from '../components/EditModal.vue'
+import DeleteModal from '../components/DeleteModal.vue'
 
 export default
 {
     
-    components: { DetailsModal,EditModal },
+    components: { DetailsModal,EditModal,DeleteModal },
     name: "WaiverList",
     data()
     {
         return {
             selectedDetailsID: null,
+            selectedDeleteID: null,
             showDetailsModal: false,
             showEditModal: false,
+            showDeleteModal: false,
             //array to store get values from api
             waiverList:[],
             //waiverFilter:null,
             //Waiver Search variable
-            waiverSearch:null
+            waiverSearch:null,
+            waiverDetails:null
         }
     },
      methods:{
     displayDetailsModal(id)
     {
-        this.selectedDetailsID = id;
+        //this.selectedDetailsID = id;
         //set modal visbility to true
+        this.getDetails(id)
         this.showDetailsModal = true
     },
     hideDetailsModal()
@@ -109,6 +120,18 @@ export default
         //set modal visbility to false
         this.showEditModal = false
     },
+    displayDeleteModal(id)
+    {
+        this.selectedDeleteID = id;
+        //set modal visbility to true
+        this.showDeleteModal = true
+    },
+    hideDeleteModal()
+    {
+        
+        //set modal visbility to false
+        this.showDeleteModal = false
+    },
         async getData(){
             //gets data from api
         let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver');
@@ -123,6 +146,7 @@ export default
             {
                 entry.phone = 'N/A';
             }
+            
 
             //dealing with phone numbers that are formatted incorrectly
             //if(!entry.phone.contains('-'))
@@ -163,7 +187,18 @@ export default
                      this.getData()
                  }).catch((err) => console.error(err));
             
-        }
+        },
+        async getDetails(id){
+        await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id).then((response) =>{
+                     //Perform Success Action
+                     this.waiverDetails = response
+                    //  this.reloadPage();
+                    //  this.getData()
+                 }).catch((err) => console.error(err));
+
+                //  return this.details;
+            
+    }
     },
     async mounted()
     {
@@ -174,23 +209,7 @@ export default
 </script>
 
 <style scoped>
-/* input{
-    display: block;
-    padding: 10px 6px;
-    width: 10%;
-    box-sizing: border-box;
-    border: none;
-    border-bottom: 1px solid #ddd;
-    color: #555;
-  }
-  button{
-    background: rgb(4, 124, 236);
-    border:0;
-    padding: 10px 20px;
-    margin-top: 20px;
-    color: white;
-    border-radius: 20px;
-  } */
+
 
   .search-button{
     background: rgb(4, 124, 236);

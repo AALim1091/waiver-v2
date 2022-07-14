@@ -4,7 +4,9 @@
     <div class="modal-overlay" @click="$emit('close-modal')">
 
       <div class="modal" @click.stop>
-        {{detailID}}
+        <!-- {{detailID}} -->
+        <!-- <button href="" @Click="(getDetails())">Get Details </button> -->
+        {{details}}
         <button @Click="$emit('close-modal')">Close </button>
       </div>
 
@@ -20,19 +22,26 @@
 <script>
 import axios from "axios"
   export default {
-    props: ["detailID"],
+    data(){
+      ddetails: null;
+    },
+    props: ["detailID", "details"],
     methods: {
     //Reloads the page on 'Start New Form' button click    
     reloadPage() {
       window.location.reload();
     },
-    async getDetails(){
-        await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + detailId).then(() =>{
-                     //Perform Success Action
-                     this.getData()
-                 }).catch((err) => console.error(err));
+    // async getDetails(){
+    //     await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + this.detailID).then((response) =>{
+    //                  //Perform Success Action
+    //                  this.details = response
+    //                 //  this.reloadPage();
+    //                 //  this.getData()
+    //              }).catch((err) => console.error(err));
+
+    //             //  return this.details;
             
-    }
+    // }
   }
 }
 </script>

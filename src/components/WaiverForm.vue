@@ -30,7 +30,7 @@
     </ul>
  
 
-  <form @submit.prevent = "handleSubmit" method = "post">
+  <form @submit.prevent method = "post">
     <!--First Name Field-->
     <label>First Name</label>
     <input type = "text" v-model="form.first" placeholder = "First Name" required >
@@ -84,6 +84,7 @@
 <script>
 import axios from 'axios';
 import SubmitModal from '../components/SubmitModal.vue'
+
 export default {
   components: { SubmitModal },
   name: 'WaiverForm',
@@ -92,11 +93,11 @@ export default {
     return{
       showModal: false,
       form: {
-        first: 'testttt',
-        last: 'testttt',
-        email: 'testttt@gmail',
-        phone: '',
-        waiver: 'Golf',
+        first: "testttt",
+        last: "testttt",
+        email: "testttt@gmail",
+        phone: "",
+        waiver: "Golf",
         consent: true,
 
       },
@@ -128,7 +129,7 @@ export default {
     },
     handleSubmit(){
       if(this.form.phone === null || this.form.phone === "")
-      {''
+      {
         this.form.phone = '000-000-0000'
       }
      axios.post("https://testapi.io/api/pechangarc/resource/waiver", this.form)
