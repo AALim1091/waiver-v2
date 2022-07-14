@@ -5,7 +5,7 @@
 
       <div class="modal" @click.stop>
         <h6>Are you sure you want to delete this post?</h6>
-        <button class="delete-modal-ok-button" @Click="Delete()">OK -> {{deleteID}}</button>
+        <button class="delete-modal-ok-button" @click="confirmDelete()">OK -> {{deleteID}}</button>
         <button class="delete-modal-cancel-button" @Click="$emit('close-modal')">Cancel</button>
       </div>
 
@@ -29,15 +29,21 @@
     reloadPage() {
       window.location.reload();
     },
-     async Delete(id){
-            await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + deleteID).then((response) =>{
-                     //Perform Success Action
-                     this.deletedWaiver = response;
-                     this.getData()
-                     $emit('close-modal')
-                 }).catch((err) => console.error(err));
+    confirmDelete()
+    {
+      this.Delete(this.deleteID)
+      $emit('close-modal')
+    },
+
+    //  async Delete(id){
+    //         await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + deleteID).then((response) =>{
+    //                  //Perform Success Action
+    //                  this.deletedWaiver = response;
+    //                  this.getData()
+    //                  $emit('close-modal')
+    //              }).catch((err) => console.error(err));
             
-    }
+    // }
   }
 }
 </script>

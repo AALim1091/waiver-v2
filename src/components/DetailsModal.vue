@@ -3,11 +3,12 @@
 
     <div class="modal-overlay" @click="$emit('close-modal')">
 
-      <div class="modal" @click.stop>
-        <!-- {{detailID}} -->
-        <!-- <button href="" @Click="(getDetails())">Get Details </button> -->
+      <div class="details-modal" @click.stop>
+
+        <!--Show details of selected entry-->
         {{details}}
-        <button @Click="$emit('close-modal')">Close </button>
+
+        <button class="details-close-button" @Click="$emit('close-modal')">Close </button>
       </div>
 
       <div class="close" @click="$emit('close-modal')">
@@ -22,26 +23,14 @@
 <script>
 import axios from "axios"
   export default {
-    data(){
-      ddetails: null;
-    },
-    props: ["detailID", "details"],
+
+    props: ["details"],
     methods: {
     //Reloads the page on 'Start New Form' button click    
     reloadPage() {
       window.location.reload();
     },
-    // async getDetails(){
-    //     await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + this.detailID).then((response) =>{
-    //                  //Perform Success Action
-    //                  this.details = response
-    //                 //  this.reloadPage();
-    //                 //  this.getData()
-    //              }).catch((err) => console.error(err));
 
-    //             //  return this.details;
-            
-    // }
   }
 }
 </script>
@@ -59,9 +48,12 @@ import axios from "axios"
   background-color: #000000da;
 }
 
-.modal {
+.details-modal {
   text-align: center;
   background-color: white;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   height: 500px;
   width: 500px;
   margin-top: 10%;
@@ -91,7 +83,16 @@ p {
   font-size: 16px;
   margin: 20px 0;
 }
-
+.details-close-button{
+  background-color: #d70505;
+  width: 150px;
+  height: 40px;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  border-radius: 16px;
+  margin-top: 50px;
+}
 button {
   background-color: #0517a3;
   width: 150px;

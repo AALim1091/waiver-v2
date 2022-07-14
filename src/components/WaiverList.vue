@@ -18,6 +18,7 @@
                 <td>Consent</td>
                 <td>Created At</td>
                 <td>Updated At</td>
+                <td>Notes</td>
                 <td>Action</td>
             </tr>
              <tr v-for="waivers in waiverList" v-bind:key="waivers.id">
@@ -33,6 +34,7 @@
             </td>
             <td>{{waivers.createdAt}}</td>
             <td>{{waivers.updatedAt}}</td>
+            <td>{{waivers.note}}</td>
              <td>
                 <div class="row">
                     <div>
@@ -84,23 +86,24 @@ export default
     data()
     {
         return {
-            selectedDetailsID: null,
+            // selectedDetailsID: null,
             selectedDeleteID: null,
+
             showDetailsModal: false,
             showEditModal: false,
             showDeleteModal: false,
             //array to store get values from api
             waiverList:[],
-            //waiverFilter:null,
+
             //Waiver Search variable
             waiverSearch:null,
+             //Waiver Details variable
             waiverDetails:null
         }
     },
      methods:{
     displayDetailsModal(id)
     {
-        //this.selectedDetailsID = id;
         //set modal visbility to true
         this.getDetails(id)
         this.showDetailsModal = true
@@ -131,6 +134,11 @@ export default
         
         //set modal visbility to false
         this.showDeleteModal = false
+        if(this.this.selectedDeleteID == true)
+        {
+            Delete(waivers.id)
+        }
+
     },
         async getData(){
             //gets data from api
@@ -192,12 +200,19 @@ export default
         await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id).then((response) =>{
                      //Perform Success Action
                      this.waiverDetails = response
-                    //  this.reloadPage();
-                    //  this.getData()
-                 }).catch((err) => console.error(err));
 
-                //  return this.details;
-            
+                    //Get notes portion from id
+                    //this deals with empty
+                    if(this.waiverDetails.note == null || this.waiverDetails.note =="")
+                    {
+                        this.waiverDetails = "There are no Notes for this entry";
+                    }
+                    else
+                    {
+                        this.waiverDetails = entry.note;
+                    }
+
+                }).catch((err) => console.error(err));      
     }
     },
     async mounted()
