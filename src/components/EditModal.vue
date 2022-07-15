@@ -3,18 +3,18 @@
 
     <div class="modal-overlay" @click="$emit('close-modal')">
 
-        <div class="editNotes-modal" @click.stop>
+        <div class="editNotes-modal" v-if="details" @click.stop>
             <h6>NOTES</h6>
             <!-- {{editNotes}} -->
             <!-- <input type = "<textarea>" class="EditNotesInput" v-model="notes" placeholder = "Enter Notes here" required > -->
-            <textarea class="EditNotesInput" v-model="notes" @click=clearText() placeholder = "Enter Notes Here. . .">
+            <textarea class="EditNotesInput" v-model="details.notes" placeholder = "Enter Notes Here. . .">
              <!--Show editNotes of selected entry-->
 
             </textarea>
-            <button class ="notes-button" @click="handleEditSubmit(editID)">Submit Notes</button>
-            {{editID}}
-            {{editNotes}}
-
+            <button class ="notes-button" @click="handleEditSubmit(details)">Submit Notes</button>
+            <!-- {{editID}}
+            {{editNotes}} -->
+            <!-- {{details}} -->
             <button class="editNotes-close-button" @Click="$emit('close-modal')">Close </button>
         </div>
 
@@ -30,26 +30,38 @@
 <script>
 import axios from "axios"
   export default {
- 
-    props: ["editNotes, editID"],
+    props: ["details"],
     methods: {
     //Reloads the page on 'Start New Form' button click    
     reloadPage() {
       window.location.reload();
     },
-    handleEditSubmit(id){
-      
-     axios.put("https://testapi.io/api/pechangarc/resource/waiver" + id, this.notes)
+    handleEditSubmit(detailObj){
+      var url = 'https://testapi.io/api/pechangarc/resource/waiver/' + detailObj.id; 
+      console.log(url);
+     axios.put(url, 
+     {
+        first: detailObj.first,
+        last: detailObj.last,
+        email: detailObj.email,
+        phone: detailObj.phone,
+        waiver: detailObj.waiver,
+        consent: detailObj.consent,
+        notes: detailObj.notes
+    }
+     )
                  .then((result) => {
                      //Perform Success Action
+                     console.log("Success!");
                      console.warn(result)
-                     result.data.json()
+                     //result.data.json()
+                     this.$emit('close-modal');
                  })
-                 .then(data =>{this.editNotes.updatedAt = data.updatedAt})
-                 .catch(error => {
-                  console.log('error here');
-                 })
-            
+                //  .then(data =>{this.editNotes.updatedAt = data.updatedAt})
+                //  .catch(error => {
+                //   console.log('error here');
+                //  });
+        //this.reloadPage()
     }   
   }
 }
