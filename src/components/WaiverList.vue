@@ -4,11 +4,11 @@
     <!-- Search Waiver Field -->
     <div class="row">
         <!-- <label>Search Waiver</label> -->
-        <!-- <form class="waiverSearchForm"> -->
+        <!-- <form @submit.prevent class="waiverSearchForm"> -->
             <input type = "text" class="waiverSearchBar" v-model="waiverSearch" placeholder= "Search By Waiver">
             <button class="my-button-style search-button" v-on:click="getData">Search</button>  
-        
-        
+        <!-- </form> -->
+
     </div>
         <table border = "1px">
             <tr>
@@ -47,7 +47,6 @@
                         <button class="my-button-style edit-button" @click="displayEditModal(waivers.id)">Edit</button>
                     </div>
                     <div>
-                        <!-- <button class="my-button-style delete-button" @click="Delete(waivers.id)">Delete</button> DELETE BUTTON FOR THE RECORD (Calls DELETE METHOD) -->
                         <button class="my-button-style delete-button" @click="displayDeleteModal(waivers.id)">Delete</button>
                     </div>
                 </div>
@@ -58,7 +57,7 @@
 
     <!--Show Details Modal-->
     <div>
-        <DetailsModal v-show="showDetailsModal" :details="this.waiverDetails" @close-modal="hideDetailsModal" />
+        <DetailsModal v-show="showDetailsModal" :details="waiverDetails" @close-modal="hideDetailsModal" />
     </div>
 
     <!--Show Edit Modal-->
@@ -100,27 +99,33 @@ export default
 
             //array to store get values from api
             waiverList:[],
-
-            //Waiver Search variable
+        
+             //Waiver Search variable
             waiverSearch:null,
-
+      
             //Waiver Details variable
             waiverDetails:null,
+           
+
             //Waiver Edit Notes variable
-            waiverEditNotes:null
+            waiverEditNotes:null,
+            waiverEditID: null
+            
         }
     },
      methods:{
         displayDetailsModal(id)
         {
             //set modal visbility to true
-            this.getDetails(id)
+            this.getDetails(id);
             this.showDetailsModal = true
         },
         hideDetailsModal()
         {
             //set modal visbility to false
+            //this.waiverDetails = null.first;
             this.showDetailsModal = false
+            this.waiverDetails.first = null;
         },
         displayEditModal(id)
         {
@@ -150,7 +155,7 @@ export default
         //gets data from api
         let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver');
         //warnings to console
-        console.warn(result.data.data)
+        //console.warn(result.data.data)
 
         //Below cleans existing front end data, but should create one method to sanitize data in db ONCE and only worry about new entries
         //^ WIP ^
@@ -195,28 +200,35 @@ export default
 
 
         },
-        // async Delete(id){
-        //     await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + id).then(() =>{
-        //              //Perform Success Action
-        //              this.getData()
-        //          }).catch((err) => console.error(err));
-            
-        // },
-        async getDetails(id){
-
-            let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id);
+        async Delete(id){
+            await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + id).then(() =>{
                      //Perform Success Action
+                     this.getData()
+                 }).catch((err) => console.error(err));
+            
+        },
+        async getDetails(id){
+                    
+            let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id);
+            
+                     //Perform Success Action
+
+                    //  For Details Modal
                      this.waiverDetails = result.data;
-                     this.waiverEditNotes = result;
+                      
+
+                    //For Edit Notes Modal
+                     this.waiverEditNotes = result.data.note;
                      this.waiverEditID = id;
 
-                    //Get notes portion from id
-                    //this deals with empty
-                    if(this.waiverEditNotes == null || this.waiverEditNotes =="")
+                    // //Get notes portion from id
+                    // //this deals with empty
+                    if(this.waiverEditNotes === null || this.waiverEditNotes ==="")
                     {
                         this.waiverEditNotes = "There are no Notes to Edit for this entry";
-
                     }           
+            
+                    return result.data;
         }
     },
     async mounted()
@@ -233,7 +245,7 @@ export default
     font-size: 12px;
     border: 1px solid grey;
     float: left;
-    width: 30%;
+    width: 80%;
     background: #f1f1f1;
 }
 .waiverSearchForm{
@@ -252,7 +264,7 @@ export default
     color: white;
     border-radius: 20px;
     cursor: pointer;
-    margin-left: -700px;
+    margin-left: -150px;
   }
 
   .delete-button{

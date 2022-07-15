@@ -4,36 +4,54 @@
     <div class="modal-overlay" @click="$emit('close-modal')">
 
         <div class="details-modal" @click.stop>
-
+            <h6>DETAILS</h6>
             <!--Show details of selected entry-->
-            {{details}}
+            <!-- {{details}} -->
 
                <!--First Name Field-->
                 <label>First Name</label>
-                <!-- {{this.details.first}} -->
+                <div v-if="details != null">
+                  {{details.first}}
+                </div>
+                
                 <!--Last Name Field-->
                 <label>Last Name</label>
-                <!-- {{details.last}} -->
+                <div v-if="details != null">
+                  {{details.last}}
+                </div>
+
                 <!--Email Field-->
                 <label>Email</label>
-                <!-- {{details.email}} -->
+                <div v-if="details != null">
+                  {{details.email}}
+                </div>
+
                 <!--Phone Number Field-->
                 <label>Phone Number</label>
-                <!-- {{details.phone}} -->
+                <div v-if="details != null">
+                  {{details.phone}}
+                </div>
+
                 <!--Location Select box-->
                 <label>Location:</label>
-                <!-- {{details.waiver}} -->
+                <div v-if="details != null">
+                  {{details.waiver}}
+                </div>
+
                 <!--createdAt Field-->
                 <label>Created At:</label>
-                <!-- {{details.createdAt}} -->
+                <div v-if="details != null">
+                  {{details.createdAt}}
+                </div>
+
                 <!--updatedAt Field-->
                 <label>Updated At:</label>
-                <!-- {{details.updatedAt}} -->
+                <div v-if="details != null">
+                  {{details.updatedAt}}
+                </div>
 
             <button class="details-modal-cancel-button" @click="$emit('close-modal')">Cancel</button>
         </div>
-
-        
 
         <!--Close(X) button-->
         <div class="close" @click="$emit('close-modal')">
@@ -49,12 +67,21 @@
 import axios from "axios"
   export default {
     props: ["details"],
+    // props:{
+    //   detailId: {
+    //         type: Number,
+    //         required: true
+    //   }
+    // },
+    
     methods: {
     //Reloads the page on 'Start New Form' button click    
     reloadPage() {
       window.location.reload();
 
     }
+
+  
   }
 }
 </script>
@@ -78,7 +105,7 @@ import axios from "axios"
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 650px;
   width: 500px;
   margin-top: 10%;
   padding: 60px 0;
@@ -110,7 +137,7 @@ p {
 .details-close-button{
   background-color: #d70505;
   width: 150px;
-  height: 120px;
+  height: 40px;
   text-align: center;
   color: white;
   font-size: 14px;
@@ -120,7 +147,7 @@ p {
 .details-modal-cancel-button {
   background-color: #b20707;
   width: 150px;
-  height: 120px;
+  height: 40px;
   color: white;
   font-size: 14px;
   border-radius: 16px;

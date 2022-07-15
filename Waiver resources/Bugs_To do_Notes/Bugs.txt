@@ -1,6 +1,10 @@
 ***BONUS FEATURES TO IMPLEMENT***
+~Sanitize Data
+	-Only front end so far, need to {GET} data, edit to correct format and then {PUT} back
+
 ~Admin Portal Page
 	-Modal for username and password requirement
+
 ~SelectBox (Done)
 	-change logo based on location selected
 	-Change waiver info based on location selected

@@ -4,11 +4,10 @@
     <div class="modal-overlay" @click="$emit('close-modal')">
 
         <div class="editNotes-modal" @click.stop>
-
-            <label>Notes</label>
+            <h6>NOTES</h6>
             <!-- {{editNotes}} -->
             <!-- <input type = "<textarea>" class="EditNotesInput" v-model="notes" placeholder = "Enter Notes here" required > -->
-            <textarea class="EditNotesInput" v-model="notes" @click=clearText() placeholder = "Enter Notes Here">
+            <textarea class="EditNotesInput" v-model="notes" @click=clearText() placeholder = "Enter Notes Here. . .">
              <!--Show editNotes of selected entry-->
 
             </textarea>
@@ -40,16 +39,16 @@ import axios from "axios"
     },
     handleEditSubmit(id){
       
-    //  axios.put("https://testapi.io/api/pechangarc/resource/waiver" + id, this.notes)
-    //              .then((result) => {
-    //                  //Perform Success Action
-    //                  console.warn(result)
-    //                  result.data.json()
-    //              })
-    //              .then(data =>{this.editNotes.updatedAt = data.updatedAt})
-    //              .catch(error => {
-    //               console.log('error here');
-    //              })
+     axios.put("https://testapi.io/api/pechangarc/resource/waiver" + id, this.notes)
+                 .then((result) => {
+                     //Perform Success Action
+                     console.warn(result)
+                     result.data.json()
+                 })
+                 .then(data =>{this.editNotes.updatedAt = data.updatedAt})
+                 .catch(error => {
+                  console.log('error here');
+                 })
             
     }   
   }
@@ -60,13 +59,12 @@ import axios from "axios"
 .EditNotesInput{
     vertical-align: top;
     text-align: left;
-    /* display: block; */
     padding: 50px;
     height: 75%;
     width: 75%;
     box-sizing: border-box;
-    border: 10px black;
-    border-bottom: 10px black;
+    border: solid black;
+    border-bottom: solid black;
     color: #555;
   }
 

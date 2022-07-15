@@ -24,9 +24,6 @@ import axios from "axios"
 
   export default {
     props: ['deleteID'],
-    data(){
-       deletedWaiver: null; 
-    },
     methods: {
     //Reloads the page on 'Start New Form' button click    
     reloadPage() {

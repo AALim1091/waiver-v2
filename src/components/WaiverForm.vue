@@ -135,7 +135,7 @@ export default {
      axios.post("https://testapi.io/api/pechangarc/resource/waiver", this.form)
                  .then((result) => {
                      //Perform Success Action
-                     console.warn(result)
+                     //console.warn(result)
                      this.displaySubmitModal();
                  }).catch(error => {
                   console.log('error here');
