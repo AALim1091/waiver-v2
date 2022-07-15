@@ -58,7 +58,7 @@ import axios from "axios"
                      this.$emit('close-modal');
                  })
                 //  .then(data =>{this.editNotes.updatedAt = data.updatedAt})
-                //  .catch(error => {
+                //  .catch(error => {test
                 //   console.log('error here');
                 //  });
         //this.reloadPage()
