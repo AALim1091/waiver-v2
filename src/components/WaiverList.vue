@@ -37,7 +37,7 @@
             </td>
             <td>{{waivers.createdAt}}</td>
             <td>{{waivers.updatedAt}}</td>
-            <td>{{waivers.note}}</td>
+            <td>{{waivers.notes}}</td>
              <td>
                 <div class="row">
                     <div>
@@ -62,7 +62,7 @@
 
     <!--Show Edit Modal-->
     <div>
-        <EditModal v-show="showEditModal" :editNotes="waiverEditNotes" :editID="waiverEditID" @close-modal="hideEditModal" />
+        <EditModal v-show="showEditModal" :details="waiverDetails" @close-modal="hideEditModal" />
     </div>
 
      <!--Show Delete Modal-->
@@ -114,123 +114,114 @@ export default
         }
     },
      methods:{
-        displayDetailsModal(id)
-        {
-            //set modal visbility to true
-            this.getDetails(id);
-            this.showDetailsModal = true
-        },
-        hideDetailsModal()
-        {
-            //set modal visbility to false
-            //this.waiverDetails = null.first;
-            this.showDetailsModal = false
-            this.waiverDetails.first = null;
-        },
-        displayEditModal(id)
-        {
-            //set modal visbility to true
-            this.getDetails(id)
-            this.showEditModal = true
-        },
-        hideEditModal()
-        {
-            //set modal visbility to false
-            this.showEditModal = false
-        },
-        displayDeleteModal(id)
-        {
-            this.selectedDeleteID = id;
-            //set modal visbility to true
-            this.showDeleteModal = true
-        },
-        hideDeleteModal()
-        {
-            
-            //set modal visbility to false
-            this.showDeleteModal = false
-
-        },
-        async getData(){
-        //gets data from api
-        let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver');
-        //warnings to console
-        //console.warn(result.data.data)
-
-        //Below cleans existing front end data, but should create one method to sanitize data in db ONCE and only worry about new entries
-        //^ WIP ^
-        result.data.data.forEach(entry => {
-            //Sanitize Phone column
-            if(entry.phone == 'n/a' || entry.phone == null || entry.phone == '000-000-0000')
+            displayDetailsModal(id)
             {
-                entry.phone = 'N/A';
-            }
-            //Sanitize Consent column
-            if(entry.consent == 1)
+                //set modal visbility to true
+                this.getDetails(id);
+                this.showDetailsModal = true
+            },
+            hideDetailsModal()
             {
-                entry.consent = true;
+                //set modal visbility to false
+                //this.waiverDetails = null.first;
+                this.showDetailsModal = false
+                this.waiverDetails.first = null;
+            },
+            displayEditModal(id)
+            {
+                //set modal visbility to true
+                this.getDetails(id)
+                this.showEditModal = true
+            },
+            hideEditModal()
+            {
+                //set modal visbility to false
+                this.showEditModal = false
+                //this.getData();
+            },
+            displayDeleteModal(id)
+            {
+                this.selectedDeleteID = id;
+                //set modal visbility to true
+                this.showDeleteModal = true
+            },
+            hideDeleteModal()
+            {
+                
+                //set modal visbility to false
+                this.showDeleteModal = false
+
+            },
+            async getData(){
+            //gets data from api
+            let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver');
+            //warnings to console
+            //console.warn(result.data.data)
+
+            //Below cleans existing front end data, but should create one method to sanitize data in db ONCE and only worry about new entries
+            //^ WIP ^
+            result.data.data.forEach(entry => {
+                //Sanitize Phone column
+                if(entry.phone == 'n/a' || entry.phone == null || entry.phone == '000-000-0000')
+                {
+                    entry.phone = 'N/A';
+                }
+                //Sanitize Consent column
+                if(entry.consent == 1)
+                {
+                    entry.consent = true;
+                }
+
+                //dealing with phone numbers that are formatted incorrectly
+                //if(!entry.phone.contains('-'))
+                //{
+                    //set this variable to the index 0,1,2 of string string (951)
+                    //phoneNumPart1 = 
+                    //set this variable to the index 3,4,5 of string string (951)
+                    //phoneNumPart1 = 
+                    //set this variable to the 1st 3 letters of string (951)
+                    //phoneNumPart1 = 
+
+                    //entry.phone = phoneNumPart1 + '-' + phoneNumPart2 + '-' + phoneNumPart3;            }
+                //}
+
+
+                //push the edited entry into DB ~~~~~
+            });
+
+            //stores each waiver entry into an array for outputting
+            this.waiverList = result.data.data
+
+            //filter wavierlist here
+            if(this.waiverSearch != null && this.waiverSearch != '')
+            {
+                this.waiverList = this.waiverList.filter(waivers => waivers.waiver.toLowerCase().includes(this.waiverSearch.toLowerCase()));
             }
 
-            //dealing with phone numbers that are formatted incorrectly
-            //if(!entry.phone.contains('-'))
-            //{
-                //set this variable to the index 0,1,2 of string string (951)
-                //phoneNumPart1 = 
-                //set this variable to the index 3,4,5 of string string (951)
-                //phoneNumPart1 = 
-                //set this variable to the 1st 3 letters of string (951)
-                //phoneNumPart1 = 
-
-                //entry.phone = phoneNumPart1 + '-' + phoneNumPart2 + '-' + phoneNumPart3;            }
-            //}
 
 
-            //push the edited entry into DB ~~~~~
-        });
-
-        //stores each waiver entry into an array for outputting
-        this.waiverList = result.data.data
-
-        //filter wavierlist here
-        if(this.waiverSearch != null && this.waiverSearch != '')
-        {
-            this.waiverList = this.waiverList.filter(waivers => waivers.waiver.toLowerCase().includes(this.waiverSearch.toLowerCase()));
-        }
-
-
-
+            },
+            async Delete(id){
+                await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + id).then(() =>{
+                        //Perform Success Action
+                        this.getData()
+                    }).catch((err) => console.error(err));
+                
+            },
+            async getDetails(id){
+                        
+                let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id);
+                
+                        //Perform Success Action
+                        //  For Details Modal
+                        this.waiverDetails = result.data;
+                        
+                        
+                        
+                
+                        
+            }
         },
-        async Delete(id){
-            await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + id).then(() =>{
-                     //Perform Success Action
-                     this.getData()
-                 }).catch((err) => console.error(err));
-            
-        },
-        async getDetails(id){
-                    
-            let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id);
-            
-                     //Perform Success Action
-
-                    //  For Details Modal
-                     this.waiverDetails = result.data;
-                      
-
-                    //For Edit Notes Modal
-                     this.waiverEditNotes = result.data.note;
-                     this.waiverEditID = id;
-
-                    // //Get notes portion from id
-                    // //this deals with empty
-                    if(this.waiverEditNotes === null || this.waiverEditNotes ==="")
-                    {
-                        this.waiverEditNotes = "There are no Notes to Edit for this entry";
-                    }           
-            
-                    return result.data;
-        }
-    },
     async mounted()
     {
         this.getData()
