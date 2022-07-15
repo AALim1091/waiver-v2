@@ -30,7 +30,7 @@
     </ul>
  
 
-  <form @submit.prevent method = "post">
+  <form class ="waiverForm" @submit.prevent method = "post">
     <!--First Name Field-->
     <label>First Name</label>
     <input type = "text" v-model="form.first" placeholder = "First Name" required >
@@ -151,7 +151,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  form{
+  form.waiverForm{
     max-width: 420px;
     margin: 30px auto;
     background: white;

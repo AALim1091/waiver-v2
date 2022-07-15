@@ -19,7 +19,12 @@ const routes = [
     // this generates a separate chunk (waiverList.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import('../views/waiverList.vue')
-  }
+  },
+  {
+    path: '/WaiverForm',
+    name: 'WaiverForm',
+    component: WaiverFormView
+  },
 
 ]
 

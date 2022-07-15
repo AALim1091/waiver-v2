@@ -3,17 +3,42 @@
 
     <div class="modal-overlay" @click="$emit('close-modal')">
 
-      <div class="details-modal" @click.stop>
+        <div class="details-modal" @click.stop>
 
-        <!--Show details of selected entry-->
-        {{details}}
+            <!--Show details of selected entry-->
+            {{details}}
 
-        <button class="details-close-button" @Click="$emit('close-modal')">Close </button>
-      </div>
+               <!--First Name Field-->
+                <label>First Name</label>
+                <!-- {{this.details.first}} -->
+                <!--Last Name Field-->
+                <label>Last Name</label>
+                <!-- {{details.last}} -->
+                <!--Email Field-->
+                <label>Email</label>
+                <!-- {{details.email}} -->
+                <!--Phone Number Field-->
+                <label>Phone Number</label>
+                <!-- {{details.phone}} -->
+                <!--Location Select box-->
+                <label>Location:</label>
+                <!-- {{details.waiver}} -->
+                <!--createdAt Field-->
+                <label>Created At:</label>
+                <!-- {{details.createdAt}} -->
+                <!--updatedAt Field-->
+                <label>Updated At:</label>
+                <!-- {{details.updatedAt}} -->
 
-      <div class="close" @click="$emit('close-modal')">
-        <img class="close-img" src="../assets/close.jpg" alt="" />
-      </div>
+            <button class="details-modal-cancel-button" @click="$emit('close-modal')">Cancel</button>
+        </div>
+
+        
+
+        <!--Close(X) button-->
+        <div class="close" @click="$emit('close-modal')">
+          <img class="close-img" src="../assets/close.jpg" alt="" />
+        </div>
 
     </div>
   </transition>
@@ -23,14 +48,13 @@
 <script>
 import axios from "axios"
   export default {
-
     props: ["details"],
     methods: {
     //Reloads the page on 'Start New Form' button click    
     reloadPage() {
       window.location.reload();
-    },
 
+    }
   }
 }
 </script>
@@ -86,17 +110,17 @@ p {
 .details-close-button{
   background-color: #d70505;
   width: 150px;
-  height: 40px;
+  height: 120px;
   text-align: center;
   color: white;
   font-size: 14px;
   border-radius: 16px;
   margin-top: 50px;
 }
-button {
-  background-color: #0517a3;
+.details-modal-cancel-button {
+  background-color: #b20707;
   width: 150px;
-  height: 40px;
+  height: 120px;
   color: white;
   font-size: 14px;
   border-radius: 16px;

@@ -5,8 +5,9 @@
 
       <div class="modal" @click.stop>
         <h6>Are you sure you want to delete this post?</h6>
-        <button class="delete-modal-ok-button" @click="confirmDelete()">OK -> {{deleteID}}</button>
-        <button class="delete-modal-cancel-button" @Click="$emit('close-modal')">Cancel</button>
+        <p>ID:{{deleteID}}</p>
+        <button class="delete-modal-ok-button" @click="$emit('close-modal', Delete(this.deleteID))">OK</button>
+        <button class="delete-modal-cancel-button" @click="$emit('close-modal')">Cancel</button>
       </div>
 
       <div class="close" @click="$emit('close-modal')">
@@ -19,6 +20,8 @@
 
 
 <script>
+import axios from "axios"
+
   export default {
     props: ['deleteID'],
     data(){
@@ -29,21 +32,13 @@
     reloadPage() {
       window.location.reload();
     },
-    confirmDelete()
-    {
-      this.Delete(this.deleteID)
-      $emit('close-modal')
-    },
-
-    //  async Delete(id){
-    //         await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + deleteID).then((response) =>{
-    //                  //Perform Success Action
-    //                  this.deletedWaiver = response;
-    //                  this.getData()
-    //                  $emit('close-modal')
-    //              }).catch((err) => console.error(err));
+     async Delete(id){
+            await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + id).then(() =>{
+                     //Perform Success Action
+                      this.reloadPage()
+                 }).catch((err) => console.error(err));
             
-    // }
+    }
   }
 }
 </script>

@@ -4,8 +4,11 @@
     <!-- Search Waiver Field -->
     <div class="row">
         <!-- <label>Search Waiver</label> -->
-        <input type = "text" v-model="waiverSearch" placeholder= "Search By Waiver">
-        <button class="my-button-style search-button" v-on:click="getData">Search</button>
+        <!-- <form class="waiverSearchForm"> -->
+            <input type = "text" class="waiverSearchBar" v-model="waiverSearch" placeholder= "Search By Waiver">
+            <button class="my-button-style search-button" v-on:click="getData">Search</button>  
+        
+        
     </div>
         <table border = "1px">
             <tr>
@@ -41,7 +44,7 @@
                         <button class="my-button-style details-button" @click="displayDetailsModal(waivers.id)">Details</button>
                     </div>
                     <div>
-                        <button class="my-button-style edit-button" @click="displayEditModal">Edit</button>
+                        <button class="my-button-style edit-button" @click="displayEditModal(waivers.id)">Edit</button>
                     </div>
                     <div>
                         <!-- <button class="my-button-style delete-button" @click="Delete(waivers.id)">Delete</button> DELETE BUTTON FOR THE RECORD (Calls DELETE METHOD) -->
@@ -55,12 +58,12 @@
 
     <!--Show Details Modal-->
     <div>
-        <DetailsModal v-show="showDetailsModal" :details="waiverDetails" @close-modal="hideDetailsModal" />
+        <DetailsModal v-show="showDetailsModal" :details="this.waiverDetails" @close-modal="hideDetailsModal" />
     </div>
 
     <!--Show Edit Modal-->
     <div>
-        <EditModal v-show="showEditModal" @close-modal="hideEditModal" />
+        <EditModal v-show="showEditModal" :editNotes="waiverEditNotes" :editID="waiverEditID" @close-modal="hideEditModal" />
     </div>
 
      <!--Show Delete Modal-->
@@ -81,80 +84,87 @@ import DeleteModal from '../components/DeleteModal.vue'
 export default
 {
     
-    components: { DetailsModal,EditModal,DeleteModal },
-    name: "WaiverList",
+        components: { DetailsModal,EditModal,DeleteModal },
+        name: "WaiverList",
     data()
     {
         return {
-            // selectedDetailsID: null,
+            
+            //For Delete Modal
             selectedDeleteID: null,
 
+            //Display Modal Variables
             showDetailsModal: false,
             showEditModal: false,
             showDeleteModal: false,
+
             //array to store get values from api
             waiverList:[],
 
             //Waiver Search variable
             waiverSearch:null,
-             //Waiver Details variable
-            waiverDetails:null
+
+            //Waiver Details variable
+            waiverDetails:null,
+            //Waiver Edit Notes variable
+            waiverEditNotes:null
         }
     },
      methods:{
-    displayDetailsModal(id)
-    {
-        //set modal visbility to true
-        this.getDetails(id)
-        this.showDetailsModal = true
-    },
-    hideDetailsModal()
-    {
-        //set modal visbility to false
-        this.showDetailsModal = false
-    },
-    displayEditModal()
-    {
-        //set modal visbility to true
-        this.showEditModal = true
-    },
-    hideEditModal()
-    {
-        //set modal visbility to false
-        this.showEditModal = false
-    },
-    displayDeleteModal(id)
-    {
-        this.selectedDeleteID = id;
-        //set modal visbility to true
-        this.showDeleteModal = true
-    },
-    hideDeleteModal()
-    {
-        
-        //set modal visbility to false
-        this.showDeleteModal = false
-        if(this.this.selectedDeleteID == true)
+        displayDetailsModal(id)
         {
-            Delete(waivers.id)
-        }
+            //set modal visbility to true
+            this.getDetails(id)
+            this.showDetailsModal = true
+        },
+        hideDetailsModal()
+        {
+            //set modal visbility to false
+            this.showDetailsModal = false
+        },
+        displayEditModal(id)
+        {
+            //set modal visbility to true
+            this.getDetails(id)
+            this.showEditModal = true
+        },
+        hideEditModal()
+        {
+            //set modal visbility to false
+            this.showEditModal = false
+        },
+        displayDeleteModal(id)
+        {
+            this.selectedDeleteID = id;
+            //set modal visbility to true
+            this.showDeleteModal = true
+        },
+        hideDeleteModal()
+        {
+            
+            //set modal visbility to false
+            this.showDeleteModal = false
 
-    },
+        },
         async getData(){
-            //gets data from api
+        //gets data from api
         let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver');
         //warnings to console
         console.warn(result.data.data)
 
-
         //Below cleans existing front end data, but should create one method to sanitize data in db ONCE and only worry about new entries
+        //^ WIP ^
         result.data.data.forEach(entry => {
-            //this deals with empty
+            //Sanitize Phone column
             if(entry.phone == 'n/a' || entry.phone == null || entry.phone == '000-000-0000')
             {
                 entry.phone = 'N/A';
             }
-            
+            //Sanitize Consent column
+            if(entry.consent == 1)
+            {
+                entry.consent = true;
+            }
 
             //dealing with phone numbers that are formatted incorrectly
             //if(!entry.phone.contains('-'))
@@ -169,10 +179,6 @@ export default
                 //entry.phone = phoneNumPart1 + '-' + phoneNumPart2 + '-' + phoneNumPart3;            }
             //}
 
-            if(entry.consent == 1)
-            {
-                entry.consent = true;
-            }
 
             //push the edited entry into DB ~~~~~
         });
@@ -189,31 +195,29 @@ export default
 
 
         },
-        async Delete(id){
-            await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + id).then(() =>{
-                     //Perform Success Action
-                     this.getData()
-                 }).catch((err) => console.error(err));
+        // async Delete(id){
+        //     await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + id).then(() =>{
+        //              //Perform Success Action
+        //              this.getData()
+        //          }).catch((err) => console.error(err));
             
-        },
+        // },
         async getDetails(id){
-        await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id).then((response) =>{
+
+            let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id);
                      //Perform Success Action
-                     this.waiverDetails = response
+                     this.waiverDetails = result.data;
+                     this.waiverEditNotes = result;
+                     this.waiverEditID = id;
 
                     //Get notes portion from id
                     //this deals with empty
-                    if(this.waiverDetails.note == null || this.waiverDetails.note =="")
+                    if(this.waiverEditNotes == null || this.waiverEditNotes =="")
                     {
-                        this.waiverDetails = "There are no Notes for this entry";
-                    }
-                    else
-                    {
-                        this.waiverDetails = entry.note;
-                    }
+                        this.waiverEditNotes = "There are no Notes to Edit for this entry";
 
-                }).catch((err) => console.error(err));      
-    }
+                    }           
+        }
     },
     async mounted()
     {
@@ -224,24 +228,43 @@ export default
 </script>
 
 <style scoped>
-
+.waiverSearchBar{
+    padding: 10px;
+    font-size: 12px;
+    border: 1px solid grey;
+    float: left;
+    width: 30%;
+    background: #f1f1f1;
+}
+.waiverSearchForm{
+    max-width: 420px;
+    margin: 30px auto;
+    background: white;
+    text-align: left;
+    padding: 40px;
+    border-radius: 10px;
+    }
 
   .search-button{
     background: rgb(4, 124, 236);
-     border:0;
+    border:0;
     padding: 10px 20px;
-    margin-top: 20px;
     color: white;
     border-radius: 20px;
+    cursor: pointer;
+    margin-left: -700px;
   }
 
   .delete-button{
     background: rgb(236, 4, 4);
+    cursor: pointer;
   }
   .details-button{
     background: rgb(5, 24, 122);
+    cursor: pointer;
   }
   .edit-button{
     background: rgb(177, 15, 210);
+    cursor: pointer;
   }
 </style>

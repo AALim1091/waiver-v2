@@ -3,7 +3,7 @@
       <!--<WaiverForm />-->
     </div>
   <nav>
-    <router-link to="/WaiverForm">Waiver Form </router-link> |
+    <router-link to="/WaiverForm"> Add Waiver</router-link> |
     <router-link to="/waiverList">Waiver List (Admin Portal)</router-link>
   </nav>
   <router-view/>
