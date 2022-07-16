@@ -45,7 +45,7 @@
     <input type = "tel" v-model="form.phone" minlength="0" maxlength="14" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder = "xxx-xxx-xxxx"> <!--Phone Number is NOT required-->
     <!--Location Select box-->
     <label>Location:</label>
-      <select v-model ="form.waiver">
+      <select v-model ="form.waiver" required>
         <option :value ="golfConstant"> Golf </option>
         <option :value ="spaConstant"> Spa </option>
         <option :value ="casinoConstant"> Casino </option>
@@ -93,12 +93,12 @@ export default {
     return{
       showModal: false,
       form: {
-        first: "testttt",
-        last: "testttt",
-        email: "testttt@gmail",
+        first: "",
+        last: "",
+        email: "",
         phone: "",
-        waiver: "Golf",
-        consent: true,
+        waiver: "",
+        consent: false,
 
       },
       golfConstant: "Golf",

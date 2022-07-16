@@ -1,6 +1,7 @@
 <template>
     <div>
     <h1>Waiver List (Admin Portal)</h1>
+
     <!-- Search Waiver Field -->
     <div class="row">
         <!-- <label>Search Waiver</label> -->
@@ -8,8 +9,12 @@
             <input type = "text" class="waiverSearchBar" v-model="waiverSearch" placeholder= "Search By Waiver">
             <button class="my-button-style search-button" v-on:click="getData">Search</button>  
         <!-- </form> -->
-
     </div>
+
+     <!-- Date Range Picker Field -->
+     <Datepicker range v-model="selectedDate" :lang="datePickerLanguage" :show-clear-button="true" :circle="true" />
+
+       <!-- TABLE OF DATA -->
         <table border = "1px">
             <tr>
                 <td>ID</td>
@@ -44,7 +49,7 @@
                         <button class="my-button-style details-button" @click="displayDetailsModal(waivers.id)">Details</button>
                     </div>
                     <div>
-                        <button class="my-button-style edit-button" @click="displayEditModal(waivers.id)">Edit</button>
+                        <button class="my-button-style edit-button" @click="displayEditModal(waivers.id)">Add/Edit Notes</button>
                     </div>
                     <div>
                         <button class="my-button-style delete-button" @click="displayDeleteModal(waivers.id)">Delete</button>
@@ -76,19 +81,39 @@
 
 <script>
 import axios from "axios"
+
+//Modals
 import DetailsModal from '../components/DetailsModal.vue'
 import EditModal from '../components/EditModal.vue'
 import DeleteModal from '../components/DeleteModal.vue'
 
+//DatePicker
+import 'vue-datepicker-ui/lib/vuedatepickerui.css';
+import VueDatepickerUi from 'vue-datepicker-ui';
+//DatePicker -> formats date/time
+import moment from 'moment'
+
 export default
 {
     
-        components: { DetailsModal,EditModal,DeleteModal },
+        components: { DetailsModal,EditModal,DeleteModal,Datepicker: VueDatepickerUi},
         name: "WaiverList",
     data()
     {
         return {
+            //DatePicker
+            selectedDate: 
+            [
+                new Date(),
+                new Date()
+            ],
             
+            //Date-Picker-Variables
+            datePickerLanguage: 'en',
+            formatedCreateAtDate: null ,
+            formattedUpdatedAt: null,
+
+
             //For Delete Modal
             selectedDeleteID: null,
 
@@ -114,6 +139,12 @@ export default
         }
     },
      methods:{
+            formatDateTime(value)
+            {
+                //console.log(moment(value).format('DD-MM-YYYY'))
+                //.toDate()
+                return moment(value).format('MM-DD-YYYY');
+            },
             displayDetailsModal(id)
             {
                 //set modal visbility to true
@@ -171,6 +202,13 @@ export default
                 {
                     entry.consent = true;
                 }
+                if(entry.createdAt != null || entry.updatedAt != null)
+                {
+
+                    entry.createdAt = this.formatDateTime(entry.createdAt); 
+                    entry.updatedAt = this.formatDateTime(entry.updatedAt);
+
+                }
 
                 //dealing with phone numbers that are formatted incorrectly
                 //if(!entry.phone.contains('-'))
@@ -192,13 +230,31 @@ export default
             //stores each waiver entry into an array for outputting
             this.waiverList = result.data.data
 
-            //filter wavierlist here
+            //console.log(this.selectedDate)
+
+            //Filter By Search
             if(this.waiverSearch != null && this.waiverSearch != '')
             {
                 this.waiverList = this.waiverList.filter(waivers => waivers.waiver.toLowerCase().includes(this.waiverSearch.toLowerCase()));
             }
 
+            //Filter By Date
+            //this.formatedCreateAtDate = moment(this.waiverList.createdAt).format("MM-DD-YYYY");
+            //this.formattedUpdatedAt = moment(this.waiverList.createdAt).format("MM-DD-YYYY");
 
+            if(this.selectedDate[0] != null && this.selectedDate[1] != null)
+            {
+                    
+                    console.log("DATES ARE SELECTED")
+                    console.log(this.selectedDate)
+                    
+                    
+                    this.waiverList = this.waiverList.filter(waivers => 
+                        new Date(waivers.createdAt) >= this.selectedDate[0] 
+                        &&  new Date(waivers.createdAt) <= this.selectedDate[1]
+                    );
+
+            }
 
             },
             async Delete(id){
@@ -225,6 +281,8 @@ export default
     async mounted()
     {
         this.getData()
+        this.selectedDate[0] = null
+        this.selectedDate[1] = null
     },
    
 }
@@ -267,7 +325,7 @@ export default
     cursor: pointer;
   }
   .edit-button{
-    background: rgb(177, 15, 210);
+    background: rgb(15, 67, 150);
     cursor: pointer;
   }
 </style>

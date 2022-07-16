@@ -50,6 +50,12 @@
                   {{details.updatedAt}}
                 </div>
 
+                <!--updatedAt Field-->
+                <label>Notes:</label>
+                <div v-if="details != null">
+                  {{details.notes}}
+                </div>
+
             <button class="details-modal-cancel-button" @click="$emit('close-modal')">Cancel</button>
         </div>
 
@@ -105,7 +111,7 @@ import axios from "axios"
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 650px;
+  height: 750px;
   width: 500px;
   margin-top: 10%;
   padding: 60px 0;

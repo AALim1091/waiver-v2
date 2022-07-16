@@ -4,18 +4,13 @@
     <div class="modal-overlay" @click="$emit('close-modal')">
 
         <div class="editNotes-modal" v-if="details" @click.stop>
-            <h6>NOTES</h6>
-            <!-- {{editNotes}} -->
-            <!-- <input type = "<textarea>" class="EditNotesInput" v-model="notes" placeholder = "Enter Notes here" required > -->
-            <textarea class="EditNotesInput" v-model="details.notes" placeholder = "Enter Notes Here. . .">
-             <!--Show editNotes of selected entry-->
 
-            </textarea>
+            <h6>NOTES</h6>
+            <textarea class="EditNotesInput" v-model="details.notes" placeholder = "Enter Notes Here. . ."></textarea>
             <button class ="notes-button" @click="handleEditSubmit(details)">Submit Notes</button>
-            <!-- {{editID}}
-            {{editNotes}} -->
             <!-- {{details}} -->
             <button class="editNotes-close-button" @Click="$emit('close-modal')">Close </button>
+            
         </div>
 
         <div class="close" @click="$emit('close-modal')">
@@ -56,11 +51,9 @@ import axios from "axios"
                      console.warn(result)
                      //result.data.json()
                      this.$emit('close-modal');
+                     this.reloadPage();
                  })
-                //  .then(data =>{this.editNotes.updatedAt = data.updatedAt})
-                //  .catch(error => {test
-                //   console.log('error here');
-                //  });
+
         //this.reloadPage()
     }   
   }
