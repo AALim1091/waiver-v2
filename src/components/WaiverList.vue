@@ -12,7 +12,11 @@
     </div>
 
      <!-- Date Range Picker Field -->
-     <Datepicker range v-model="selectedDate" :lang="datePickerLanguage" :show-clear-button="true" :circle="true" />
+     <p>
+        Filter by Date or Waiver
+        Then click "Search" Button
+        <Datepicker range @reset="clearDateTime" v-model="selectedDate" :lang="datePickerLanguage" :show-clear-button="true" :circle="true" />
+     </p>
 
        <!-- TABLE OF DATA -->
         <table border = "1px">
@@ -144,6 +148,11 @@ export default
                 //console.log(moment(value).format('DD-MM-YYYY'))
                 //.toDate()
                 return moment(value).format('MM-DD-YYYY');
+            },
+            clearDateTime()
+            {
+                this.selectedDate[0] = null
+                this.selectedDate[1] = null
             },
             displayDetailsModal(id)
             {
@@ -281,8 +290,7 @@ export default
     async mounted()
     {
         this.getData()
-        this.selectedDate[0] = null
-        this.selectedDate[1] = null
+        this.clearDateTime()
     },
    
 }

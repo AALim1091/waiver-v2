@@ -1,4 +1,6 @@
 ***BONUS FEATURES TO IMPLEMENT***
+~Requirements:[- Populate the Waiver hidden field value through a url querystring parameter. Ie: index.html?waiver={spa/golf/casino}] - ???????????
+
 ~Sanitize Data
 	-Only front end so far, need to {GET} data, edit to correct format and then {PUT} back
 
