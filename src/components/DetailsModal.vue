@@ -59,6 +59,7 @@
             <button class="details-modal-cancel-button" @click="$emit('close-modal')">Cancel</button>
         </div>
 <!------------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------------------------------------------------------------------->
         <!--Close(X) button-->
         <div class="close" @click="$emit('close-modal')">
           <img class="close-img" src="../assets/close.jpg" alt="" />
@@ -67,7 +68,7 @@
     </div>
   </transition>
 </template>
-
+<!------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------------------------------------------------------------------->
 <script>
 import axios from "axios"
@@ -111,7 +112,7 @@ import axios from "axios"
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 750px;
+  height: 950px;
   width: 500px;
   margin-top: 10%;
   padding: 60px 0;

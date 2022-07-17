@@ -50,7 +50,8 @@
     <input type = "tel" v-model="form.phone" minlength="0" maxlength="14" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder = "xxx-xxx-xxxx"> <!--Phone Number is NOT required-->
     <!--Location Select box-->
     <label>Location:</label>
-      <select v-model ="form.waiver" required>
+      <select boarder="1px" v-model ="form.waiver" required> 
+        <!-- v-on:change="changeRoute($event)" -->
         <option :value ="golfConstant"> Golf </option>
         <option :value ="spaConstant"> Spa </option>
         <option :value ="casinoConstant"> Casino </option>
@@ -62,7 +63,7 @@
     </div>
     <!--Submit Button-->
     <div class = "submit">
-        <button class="my-button-style submit-button" @click="handleSubmit">Submit</button>
+        <button v-if ="form.consent != false" class="my-button-style submit-button" @click="handleSubmit">Submit</button>
     </div>
   </form>
 
@@ -73,7 +74,7 @@
   <SubmitModal v-show="showModal" @close-modal="hideSubmitModal" />
 
 <!------------------------------------------------------------------------------------------------------------------->
-
+<!------------------------------------------------------------------------------------------------------------------->
   <!-- For Testing  Form 
   <p> text: {{ this.text }}</p>
   <p> SUCCESS: {{form.submitSuccessful}}</p>
@@ -88,7 +89,7 @@
 
 </template>
 
-
+<!------------------------------------------------------------------------------------------------------------------->
 <!------------------------------------------------------------------------------------------------------------------->
 <script>
 import axios from 'axios';
@@ -110,9 +111,11 @@ export default {
         consent: false,
 
       },
+
       golfConstant: "Golf",
       spaConstant: "Spa",
       casinoConstant: "Casino",
+
       golfBulletPoint1: "Golf bullet point 1",
       golfBulletPoint2: "Golf bullet point 2",
       golfBulletPoint3: "Golf bullet point 3",
@@ -126,6 +129,10 @@ export default {
     }
   },
   methods: {
+    changeRoute(e)
+    {
+      this.$router.push("/" + e.target.value);
+    },
      displaySubmitModal()
     {
         //set modal visbility to true

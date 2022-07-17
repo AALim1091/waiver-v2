@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import WaiverFormView from '../views/WaiverForm.vue'
+import NotFound from '@/components/NotFound.vue'
 
 const routes = [
   {
@@ -20,11 +21,28 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import('../views/waiverList.vue')
   },
+  ///////////////////////////////////////////////
+  //////WAIVER FORM SELECTION BOX PATHS//////////
+  ///////////////////////////////////////////////
+  // {
+  //   path: '/Golf"',
+  //   name: 'WaiverForm',
+  //   component: 
+  // },
+  // {
+  //   path: '/Spa',
+  //   name: 'WaiverForm',
+  //   component: 
+  // },
+  // {
+  //   path: '/Casino',
+  //   name: 'WaiverForm',
+  //   component: 
+  // },
   {
-    path: '/WaiverForm',
-    name: 'WaiverForm',
-    component: WaiverFormView
-  },
+    path: "/:catchAll(.*)",
+    component: NotFound,
+  }
 
 ]
 

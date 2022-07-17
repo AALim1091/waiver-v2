@@ -22,7 +22,7 @@
 </template>
 
 <!------------------------------------------------------------------------------------------------------------------->
-
+<!------------------------------------------------------------------------------------------------------------------->
 <script>
 import axios from "axios"
   export default {
@@ -91,7 +91,7 @@ import axios from "axios"
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 800px;
   width: 500px;
   margin-top: 10%;
   padding: 60px 0;
