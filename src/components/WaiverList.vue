@@ -2,6 +2,13 @@
     <div>
     <h1>Waiver List (Admin Portal)</h1>
 
+     <div>
+        <small><b><h>Filter by Date or Waiver then click "Search" Button</h></b></small>
+        <i><b><p>*To Clear a search: </p></b></i>
+        <small><p><b>-Waiver Search:</b> Empty search box then click the "Search" Button </p></small>
+        <small><p><b>-Date Search:</b> Click the Date X and then the "Search" Button </p></small>
+    </div>
+
     <!-- Search Waiver Field -->
     <div class="row">
         <!-- <label>Search Waiver</label> -->
@@ -12,13 +19,12 @@
     </div>
 
      <!-- Date Range Picker Field -->
-     <p>
-        Filter by Date or Waiver
-        Then click "Search" Button
         <Datepicker range @reset="clearDateTime" v-model="selectedDate" :lang="datePickerLanguage" :show-clear-button="true" :circle="true" />
-     </p>
-
+    
+    <!--Pagination Componenet-->
+<!------------------------------------------------------------------------------------------------------------------->
        <!-- TABLE OF DATA -->
+<!------------------------------------------------------------------------------------------------------------------->       
         <table border = "1px">
             <tr>
                 <td>ID</td>
@@ -63,7 +69,9 @@
             </tr>
         </table>        
     </div>
-
+<!------------------------------------------------------------------------------------------------------------------->
+        <!--Modals-->
+<!------------------------------------------------------------------------------------------------------------------->
     <!--Show Details Modal-->
     <div>
         <DetailsModal v-show="showDetailsModal" :details="waiverDetails" @close-modal="hideDetailsModal" />
@@ -81,7 +89,7 @@
 
 </template>
 
-
+<!------------------------------------------------------------------------------------------------------------------->
 
 <script>
 import axios from "axios"
@@ -280,11 +288,7 @@ export default
                         //Perform Success Action
                         //  For Details Modal
                         this.waiverDetails = result.data;
-                        
-                        
-                        
-                
-                        
+           
             }
         },
     async mounted()

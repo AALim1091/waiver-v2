@@ -4,6 +4,9 @@
     {{form.waiver}}
   </p>
 -->
+<!------------------------------------------------------------------------------------------------------------------->
+<!--Waiver Logo--->
+<!------------------------------------------------------------------------------------------------------------------->
 <img v-if="form.waiver === spaConstant" alt="Pechanga logo" src="../assets/Spa-logo.png">
 <img v-if="form.waiver === golfConstant" alt="Pechanga logo" src="../assets/Journey-logo.jpg">
 <img v-if="form.waiver === casinoConstant" alt="Pechanga logo" src="../assets/logo.jpg">
@@ -11,8 +14,9 @@
   <div class="WaiverForm">
     <h1>{{ msg }}</h1> 
   </div>
-  <!--Mock Waiver agreements-->
-
+  <!------------------------------------------------------------------------------------------------------------------->
+    <!--Mock Waiver agreements-->
+  <!------------------------------------------------------------------------------------------------------------------->
     <ul v-if="form.waiver === golfConstant">
       <li>{{golfBulletPoint1}}</li>
       <li>{{golfBulletPoint2}}</li>
@@ -28,8 +32,9 @@
       <li>{{casinoBulletPoint2}}</li>
       <li>{{casinoBulletPoint3}}</li>
     </ul>
- 
-
+<!------------------------------------------------------------------------------------------------------------------->
+    <!--Waiver Form --> 
+<!------------------------------------------------------------------------------------------------------------------->
   <form class ="waiverForm" @submit.prevent method = "post">
     <!--First Name Field-->
     <label>First Name</label>
@@ -61,11 +66,13 @@
     </div>
   </form>
 
+<!------------------------------------------------------------------------------------------------------------------->
   <!--Post Successful Message-->
+<!------------------------------------------------------------------------------------------------------------------->
+  
   <SubmitModal v-show="showModal" @close-modal="hideSubmitModal" />
 
-   
-
+<!------------------------------------------------------------------------------------------------------------------->
 
   <!-- For Testing  Form 
   <p> text: {{ this.text }}</p>
@@ -81,6 +88,8 @@
 
 </template>
 
+
+<!------------------------------------------------------------------------------------------------------------------->
 <script>
 import axios from 'axios';
 import SubmitModal from '../components/SubmitModal.vue'
@@ -139,8 +148,7 @@ export default {
                      this.displaySubmitModal();
                  }).catch(error => {
                   console.log('error here');
-                 })
-            
+                 })           
     }
   },
   props: {

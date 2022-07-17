@@ -58,7 +58,7 @@
 
             <button class="details-modal-cancel-button" @click="$emit('close-modal')">Cancel</button>
         </div>
-
+<!------------------------------------------------------------------------------------------------------------------->
         <!--Close(X) button-->
         <div class="close" @click="$emit('close-modal')">
           <img class="close-img" src="../assets/close.jpg" alt="" />
@@ -68,7 +68,7 @@
   </transition>
 </template>
 
-
+<!------------------------------------------------------------------------------------------------------------------->
 <script>
 import axios from "axios"
   export default {

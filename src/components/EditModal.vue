@@ -20,7 +20,8 @@
     </div>
   </transition>
 </template>
-<!--<EditModal v-show="showEditModal" :editNotes="waiverEditNotes" :editID="waiverEditID" @close-modal="hideEditModal" />-->
+
+<!------------------------------------------------------------------------------------------------------------------->
 
 <script>
 import axios from "axios"
