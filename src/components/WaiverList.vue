@@ -22,21 +22,22 @@
         <Datepicker range @reset="clearDateTime" v-model="selectedDate" :lang="datePickerLanguage" :show-clear-button="true" :circle="true" />
 
     <!-- Present total items on the page for user -->
-    <div>total items on page: {{totalItems}}</div>
+    <div>total items in list: {{totalItems}}</div>
+    <div>total items on page: {{totalItemsPerPage}}</div>
     <div>Page number: {{pageNum + 1}}</div>
 
 
      <!--Pagination Componenet-->
      <!-- Location Select box -->
     <label>Select Page:</label>
-      <select boarder="1px">  v-model ="form.waiver"
+      <select class="pageSelect" boarder="1px">  v-model ="form.waiver"
         <!-- <v-on:change="changeRoute($event)" -->
-        <option :value ="golfConstant"> 1 </option>
-        <option :value ="spaConstant"> 2 </option>
-        <option :value ="casinoConstant"> 3 </option>
+        <option :value ="1"> 1 </option>
+        <option :value ="2"> 2 </option>
+        <option :value ="3"> 3 </option>
       </select>
-<button class="previousPageButton" v-on:click="prevPage">Prev Page</button>
-<button class="nextPageButton" v-on:click="nextPage">Next Page</button>  
+<button v-if="pageNum > 0" class="previousPageButton" v-on:click="prevPage">Prev Page</button>
+<button v-if="this.pagedData[this.pageNum + 1] != null" class="nextPageButton" v-on:click="nextPage">Next Page</button>  
 
     
 <!------------------------------------------------------------------------------------------------------------------->
@@ -138,10 +139,12 @@ export default
             
             //Pagination
             perPage: 20, //# of items per page
+            totalItemsPerPage: null, //total # of items per page
             totalItems: null, //total # of items in list
             pages:[], //total # of pages
             pagedData:[], //sectioned items
             pageNum: 0,
+            maxPageCount: 0,
 
             //DatePicker
             selectedDate: 
@@ -215,6 +218,14 @@ export default
                this.pageNum++;
                this.getData();
             },
+            // maxPages()
+            // {
+            //     for(let i = 0; i <= this.pages.length; i++)
+            //     {
+            //         maxPageCount++;
+            //     }
+            //     return maxPageCount;
+            // },
             formatDateTime(value)
             {
                 //console.log(moment(value).format('DD-MM-YYYY'))
@@ -276,7 +287,7 @@ export default
             //^ WIP ^
 
             this.totalItems = result.data.data.length;
-            //console.log(this.totalItems)
+            console.log(this.totalItems)
 
             
 
@@ -346,12 +357,10 @@ export default
             }
             console.log(this.waiverList);
             ////////////////Pagination////////////////////////////
-            // if(pageNum >= 0)
-            
                 this.createPageData(this.waiverList, this.perPage)
                 this.waiverList = this.pagedData[this.pageNum];
-                this.totalItems = this.waiverList.length; //For item count of page
-            
+                this.totalItemsPerPage = this.waiverList.length; //For item count of page
+
             
             
             },
@@ -386,20 +395,23 @@ export default
 </script>
 
 <style scoped>
-.pageSelect{
+/* .pageSelect{
   float:left;
+} */
+.pageSelect{
+   cursor: pointer;
 }
 .previousPageButton{
     background: rgb(8, 169, 197);
     position: absolute;
-    top:36%;
+    top:38%;
     left: 0;
     cursor: pointer;
 }
 .nextPageButton{
     background: rgb(8, 169, 197);
     position:absolute;
-    top: 36%;
+    top: 38%;
     right:0;
     cursor: pointer;   
 }
