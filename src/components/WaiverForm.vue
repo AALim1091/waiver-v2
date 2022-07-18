@@ -50,7 +50,7 @@
     <input type = "tel" v-model="form.phone" minlength="0" maxlength="14" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder = "xxx-xxx-xxxx"> <!--Phone Number is NOT required-->
     <!--Location Select box-->
     <label>Location:</label>
-      <select boarder="1px" v-model ="form.waiver" required> 
+      <select class="pageSelect" boarder="1px" v-model ="form.waiver" required> 
         <!-- v-on:change="changeRoute($event)" -->
         <option :value ="golfConstant"> Golf </option>
         <option :value ="spaConstant"> Spa </option>
@@ -119,7 +119,7 @@ export default {
       golfBulletPoint1: "Golf bullet point 1",
       golfBulletPoint2: "Golf bullet point 2",
       golfBulletPoint3: "Golf bullet point 3",
-      spaBulletPoint1: "Spabullet point 1",
+      spaBulletPoint1: "Spa bullet point 1",
       spaBulletPoint2: "Spa bullet point 2",
       spaBulletPoint3: "Spa bullet point 3",
       casinoBulletPoint1: "Casino bullet point 1",
@@ -166,6 +166,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+.pageSelect{
+  float:left;
+}
   form.waiverForm{
     max-width: 420px;
     margin: 30px auto;

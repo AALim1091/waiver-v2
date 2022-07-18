@@ -20,9 +20,24 @@
 
      <!-- Date Range Picker Field -->
         <Datepicker range @reset="clearDateTime" v-model="selectedDate" :lang="datePickerLanguage" :show-clear-button="true" :circle="true" />
-    
+
+    <!-- Present total items on the page for user -->
+    <div>total items on page: {{totalItems}}</div>
+    <div>Page number: {{pageNum + 1}}</div>
+
+
      <!--Pagination Componenet-->
-    <div>total: {{totalItems}}</div>
+     <!-- Location Select box -->
+    <label>Select Page:</label>
+      <select boarder="1px">  v-model ="form.waiver"
+        <!-- <v-on:change="changeRoute($event)" -->
+        <option :value ="golfConstant"> 1 </option>
+        <option :value ="spaConstant"> 2 </option>
+        <option :value ="casinoConstant"> 3 </option>
+      </select>
+<button class="previousPageButton" v-on:click="prevPage">Prev Page</button>
+<button class="nextPageButton" v-on:click="nextPage">Next Page</button>  
+
     
 <!------------------------------------------------------------------------------------------------------------------->
        <!-- TABLE OF DATA -->
@@ -125,7 +140,8 @@ export default
             perPage: 20, //# of items per page
             totalItems: null, //total # of items in list
             pages:[], //total # of pages
-            pagedData:[], //sectioned items 
+            pagedData:[], //sectioned items
+            pageNum: 0,
 
             //DatePicker
             selectedDate: 
@@ -165,18 +181,19 @@ export default
         }
     },
      methods:{
+            //Pagination aka a nightmare 
             createPageData(dataList, itemsPerPage)
             {   
-                this.pagedData = [];
+                this.pagedData = []; //sectioned items 
                 let splitPage = [];
                 let count = 1;
                 let itemsPerPageIncrement = 1;
                 //this.pagedData = new Array(5);
-                for(let i = 0; i <= dataList.length; i++) 
+                for(let i = 0; i <= dataList.length; i++) //iterate through entire list
                 {
-                    splitPage.push(dataList[i]);
+                    splitPage.push(dataList[i]); //push  item into splitpage
                     //- 1 because of - based indexing
-                    if(itemsPerPageIncrement == itemsPerPage || i == dataList.length - 1)
+                    if(itemsPerPageIncrement == itemsPerPage || i == dataList.length - 1) //seperate if # of items equal desired item count for page
                     {
                         let tempArray = JSON.parse(JSON.stringify(splitPage));
                         this.pagedData.push(tempArray);
@@ -187,6 +204,16 @@ export default
                     }
                     itemsPerPageIncrement++;               
                 }
+            },
+            prevPage()
+            {
+                this.pageNum--;
+                this.getData();
+            },
+            nextPage()
+            {
+               this.pageNum++;
+               this.getData();
             },
             formatDateTime(value)
             {
@@ -237,6 +264,8 @@ export default
                 this.showDeleteModal = false
 
             },
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             async getData(){
             //gets data from api
             let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver'); 
@@ -296,12 +325,12 @@ export default
 
             //console.log(this.selectedDate)
 
-            //Filter By Search
+            //////////////Filter By Search////////////////////////////
             if(this.waiverSearch != null && this.waiverSearch != '')
             {
                 this.waiverList = this.waiverList.filter(waivers => waivers.waiver.toLowerCase().includes(this.waiverSearch.toLowerCase()));
             }
-            //Filter By Date
+            ////////////////Filter By Date////////////////////////////
             if(this.selectedDate[0] != null && this.selectedDate[1] != null)
             {
                     
@@ -316,13 +345,18 @@ export default
 
             }
             console.log(this.waiverList);
-            //Pagination
-            this.createPageData(this.waiverList, this.perPage)
-            this.waiverList = this.pagedData[0];
+            ////////////////Pagination////////////////////////////
+            // if(pageNum >= 0)
             
-            this.totalItems = this.waiverList.length;
-
+                this.createPageData(this.waiverList, this.perPage)
+                this.waiverList = this.pagedData[this.pageNum];
+                this.totalItems = this.waiverList.length; //For item count of page
+            
+            
+            
             },
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////            
             async Delete(id){
                 await axios.delete('https://testapi.io/api/pechangarc/resource/waiver/' + id).then(() =>{
                         //Perform Success Action
@@ -330,6 +364,8 @@ export default
                     }).catch((err) => console.error(err));
                 
             },
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             async getDetails(id){
                         
                 let result = await axios.get('https://testapi.io/api/pechangarc/resource/waiver/' + id);
@@ -350,6 +386,23 @@ export default
 </script>
 
 <style scoped>
+.pageSelect{
+  float:left;
+}
+.previousPageButton{
+    background: rgb(8, 169, 197);
+    position: absolute;
+    top:36%;
+    left: 0;
+    cursor: pointer;
+}
+.nextPageButton{
+    background: rgb(8, 169, 197);
+    position:absolute;
+    top: 36%;
+    right:0;
+    cursor: pointer;   
+}
 .waiverListTable{
     border: 1px solid;
     width: 100%;
