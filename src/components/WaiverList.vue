@@ -32,9 +32,11 @@
     <label>Select Page:</label>
       <select class="pageSelect" @change="selectPage(pageNum)"  v-model ="pageNum" boarder="1px">  
         <!-- <v-on:change="changeRoute($event)" -->
-        <option :value ="0"> 1 </option>
-        <option :value ="1"> 2 </option>
-        <option :value ="2"> 3 </option>
+        <option v-if="this.pagedData[0] != null" :value ="0"> 1 </option>
+        <option v-if="this.pagedData[1] != null" :value ="1"> 2 </option>
+        <option v-if="this.pagedData[2] != null" :value ="2"> 3 </option>
+        <option v-if="this.pagedData[3] != null" :value ="3"> 4 </option>
+        <option v-if="this.pagedData[4] != null" :value ="4"> 5 </option>
       </select>
 <button v-if="pageNum > 0" class="previousPageButton" v-on:click="prevPage">Prev Page</button>
 <button v-if="this.pagedData[this.pageNum + 1] != null" class="nextPageButton" v-on:click="nextPage">Next Page</button>  
