@@ -30,11 +30,11 @@
      <!--Pagination Componenet-->
      <!-- Location Select box -->
     <label>Select Page:</label>
-      <select class="pageSelect" boarder="1px">  v-model ="form.waiver"
+      <select class="pageSelect" @change="selectPage(pageNum)"  v-model ="pageNum" boarder="1px">  
         <!-- <v-on:change="changeRoute($event)" -->
-        <option :value ="1"> 1 </option>
-        <option :value ="2"> 2 </option>
-        <option :value ="3"> 3 </option>
+        <option :value ="0"> 1 </option>
+        <option :value ="1"> 2 </option>
+        <option :value ="2"> 3 </option>
       </select>
 <button v-if="pageNum > 0" class="previousPageButton" v-on:click="prevPage">Prev Page</button>
 <button v-if="this.pagedData[this.pageNum + 1] != null" class="nextPageButton" v-on:click="nextPage">Next Page</button>  
@@ -207,6 +207,11 @@ export default
                     }
                     itemsPerPageIncrement++;               
                 }
+            },
+            selectPage(selectionNum)
+            {
+                this.pageNum = selectionNum;
+                this.getData();
             },
             prevPage()
             {
