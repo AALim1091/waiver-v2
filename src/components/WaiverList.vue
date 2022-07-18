@@ -14,29 +14,35 @@
             <!-- <label>Search Waiver</label> -->
             <!-- <form @submit.prevent class="waiverSearchForm"> -->
                 <input type = "text" class="waiverSearchBar" v-model="waiverSearch" placeholder= "Search By Waiver">
-                <button class="my-button-style search-button" v-on:click="getData">Search</button>  
+                <!-- <button class="my-button-style search-button" v-on:click="getData">Search</button>   -->
             <!-- </form> -->
         </div>
 
      <!-- Date Range Picker Field -->
         <Datepicker range @reset="clearDateTime" v-model="selectedDate" :lang="datePickerLanguage" :show-clear-button="true" :circle="true" />
+    
+    <!-- Search Waiver Button -->
+        <button class="my-button-style search-button" v-on:click="getData">Search</button>
 
     <!-- Present total items on the page for user -->
     <div>total items in list: {{totalItems}}</div>
     <div>total items on page: {{totalItemsPerPage}}</div>
     <div>Page number: {{pageNum + 1}}</div>
+    <div>Note: Need to update PAGINATION, didn't realize API had pages, api is 50 per page so moves items to next page if total is passed 50 guhhhh</div>
+    
+
 
 
      <!--Pagination Componenet-->
      <!-- Location Select box -->
     <label>Select Page:</label>
-      <select class="pageSelect" @change="selectPage(pageNum)"  v-model ="pageNum" boarder="1px">  
+      <select class="pageSelect"  @change="selectPage(pageNum)"  v-model ="pageNum" boarder="1px">  
         <!-- <v-on:change="changeRoute($event)" -->
-        <option v-if="this.pagedData[0] != null" :value ="0"> 1 </option>
-        <option v-if="this.pagedData[1] != null" :value ="1"> 2 </option>
+        <option v-for="page in this.pages" v-bind:key="page" :value ="page - 1"> {{page}} </option>
+        <!-- <option v-if="this.pagedData[1] != null" :value ="1"> 2 </option>
         <option v-if="this.pagedData[2] != null" :value ="2"> 3 </option>
         <option v-if="this.pagedData[3] != null" :value ="3"> 4 </option>
-        <option v-if="this.pagedData[4] != null" :value ="4"> 5 </option>
+        <option v-if="this.pagedData[4] != null" :value ="4"> 5 </option> -->
       </select>
 <button v-if="pageNum > 0" class="previousPageButton" v-on:click="prevPage">Prev Page</button>
 <button v-if="this.pagedData[this.pageNum + 1] != null" class="nextPageButton" v-on:click="nextPage">Next Page</button>  
@@ -140,6 +146,19 @@ export default
         return {
             
             //Pagination
+            //NEED TO UPDATE THE PAGINATION!, didn't notice the different pages within the API GUHHHHHH////
+            /*
+            "first_page_url":"https:\/\/testapi.io\/api\/pechangarc\/resource\/waiver?page=1",
+            "from":1,
+            "last_page":2,
+            "last_page_url":"https:\/\/testapi.io\/api\/pechangarc\/resource\/waiver?page=2",
+            "next_page_url":"https:\/\/testapi.io\/api\/pechangarc\/resource\/waiver?page=2",
+            "path":"https:\/\/testapi.io\/api\/pechangarc\/resource\/waiver",
+            "per_page":50,
+            "prev_page_url":null,
+            "to":50,
+            "total":60}
+            */
             perPage: 20, //# of items per page
             totalItemsPerPage: null, //total # of items per page
             totalItems: null, //total # of items in list
@@ -190,6 +209,7 @@ export default
             createPageData(dataList, itemsPerPage)
             {   
                 this.pagedData = []; //sectioned items 
+                this.pages = [];
                 let splitPage = [];
                 let count = 1;
                 let itemsPerPageIncrement = 1;
@@ -440,8 +460,7 @@ export default
     padding: 10px;
     font-size: 12px;
     border: 1px solid grey;
-    float: left;
-    width: 80%;
+    width: 21.5%;
     background: #f1f1f1;
 }
 .waiverSearchForm{
@@ -460,7 +479,10 @@ export default
     color: white;
     border-radius: 20px;
     cursor: pointer;
-    margin-left: -150px;
+    position: absolute;
+    top:27%;
+    left: 22%;
+    
   }
 
   .delete-button{
